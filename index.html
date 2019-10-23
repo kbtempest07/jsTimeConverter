@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css" rel="stylesheet">
+  <style>
+  .margin-bottom {
+    margin-bottom: 15px;
+  }
+
+  .fade-enter, .fade-leave-active {
+    opacity: 0;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  </style>
+</head>
+<body>
+  <section id="app" class="section">
+    <form  id="form" class="validate" @submit.prevent="timeConverter">
+      <div class="form-field field">
+        <label for="full-name" class="label">Time String</label>
+        <input type="text" name="full-name" id="full-name" placeholder="Enter Time String" required v-model="timeString" class="input" />
+        
+      </div>
+      </form>
+      <button class="button" @click="clear" style='margin-left: 5px; cursor: pointer;'>Clear</button>
+      <div v-if="resultData.length > 0" style='margin: 10px;'> 
+        <span><b>Result Data</b></span>
+        <p v-for="result in resultData" :key="result.name" style='margin: 3px;'>
+          <span>Name: {{result.name}},</span>
+          
+          <span>Time: {{result.time}}</span>
+        </p>
+      </div>
+      <div v-else>Enter a time string to get Result</div>
+    </section>
+    <script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      new Vue({
+        el: '#app',
+        data: {
+          timeString: '',
+          result: []
+        },
+        computed: {
+          resultData() {
+
+            return this.result
+          }
+        },
+        methods: {
+          clear() {
+            this.timeString = '';
+            this.result = [];
+          },
+          timeConverter() {
+              const newYork = new Date(this.timeString).toLocaleString("en-US", {timeZone: "America/New_York"});
+              const kolkata = new Date(this.timeString).toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
+              this.result = [
+                {
+                  name: 'NewYork', time: newYork
+                },
+                {
+                  name: 'India/Kolkata', time: kolkata
+                }
+              ];
+          }
+        }
+      });
+    })
+    </script>
+</body>
+</html>
